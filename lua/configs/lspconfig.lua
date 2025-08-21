@@ -13,10 +13,18 @@ local vue_plugin = {
 
 local servers = {
   html = {
-    filetypes = { "html", "vue" }, -- allow HTML inside Vue
+    -- allow HTML inside Vue
+    -- filetypes = { "html", "vue" },
+
+    -- no HTML lsp inside vue
+    filetypes = { "html" },
   },
   cssls = {
-    filetypes = { "css", "scss", "less", "vue" }, -- allow CSS inside Vue
+    -- allow CSS inside Vue
+    -- filetypes = { "css", "scss", "less", "vue" },
+
+    -- no CSS inside Vue
+    filetypes = { "css", "scss", "less" },
   },
   vue_ls = {
     filetypes = { "vue" },
@@ -49,12 +57,47 @@ local servers = {
       },
     },
   },
+  eslint = {
+    filetypes = {
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "vue",
+    },
+    settings = {
+      -- auto fix on save
+      format = true,
+    },
+  },
+  lua_ls = {
+    settings = {
+      Lua = {
+        runtime = { version = "LuaJIT" },
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file("", true),
+          checkThirdParty = false,
+        },
+        telemetry = { enable = false },
+      },
+    },
+  },
 }
 
 for name, opts in pairs(servers) do
   vim.lsp.enable(name) -- nvim v0.11.0+ required
   vim.lsp.config(name, opts) -- nvim v0.11.0+ required
 end
+
+-- Auto-fix on save (EslintFixAll is exposed by eslint-lsp (eslint_d))
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = {"*.js", "*.jsx", "*.ts", "*.tsx", "*.vue" },
+  command = "EslintFixAll",
+})
+
 -- local servers = { "html", "cssls" }
 -- vim.lsp.enable(servers)
 
