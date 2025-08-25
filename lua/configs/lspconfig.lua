@@ -93,10 +93,10 @@ for name, opts in pairs(servers) do
 end
 
 -- Auto-fix on save (EslintFixAll is exposed by eslint-lsp (eslint_d))
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = {"*.js", "*.jsx", "*.ts", "*.tsx", "*.vue" },
-  command = "EslintFixAll",
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = {"*.js", "*.jsx", "*.ts", "*.tsx", "*.vue" },
+--   command = "EslintFixAll",
+-- })
 
 -- local servers = { "html", "cssls" }
 -- vim.lsp.enable(servers)
